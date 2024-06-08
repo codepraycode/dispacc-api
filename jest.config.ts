@@ -13,7 +13,7 @@ const config: Config.InitialOptions = {
         ],
     },
     moduleNameMapper: {
-        '^@/(.*)$': '<rootDir>/src/*',
+        '^@/(.*)$': '<rootDir>/src/$1',
     },
 };
 
