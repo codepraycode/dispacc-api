@@ -1,0 +1,19 @@
+{
+    "type": "object",
+    "properties": {
+        "title": {
+            "type": "string"
+        },
+        "charged_amount": {
+            "type": "number"
+        },
+        "fixed": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "title",
+        "charged_amount"
+    ],
+    "additionalProperties": false
+}
