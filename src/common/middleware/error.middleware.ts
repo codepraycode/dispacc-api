@@ -1,33 +1,31 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NODE_ENV } from '@/config';
 import { ApiError } from '@/interfaces/ApiResponse';
 import AppResponse from '@/utils/response.utils';
 import { Request, Response } from 'express';
 
 const errorMiddleware = (
-    error: Error,
+    error: any,
     req: Request,
     res: Response,
     // next: NextFunction,
 ): void => {
     const resp = new AppResponse(res);
 
-    console.error(error);
-    resp.success = false;
     const _error: ApiError = {
         field: error.name || 'server',
         message: error.message || 'Interal server error',
     };
 
+    console.error('Error Encountered:', error);
     if (NODE_ENV === 'development') {
         // Include stack trace in development mode
-        // resp.errors = [{ field: 'server', message: error.stack || 'Unknown Error' }];
-
         _error.stack = error.stack || 'Unknown error';
     }
 
+    resp.success = false;
     resp.errors = [_error];
-
-    resp.status = res.statusCode === 200 ? 500 : res.statusCode;
+    resp.status = error.status || 500;
 
     resp.send();
 };
