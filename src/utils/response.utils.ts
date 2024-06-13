@@ -23,6 +23,15 @@ class AppResponse {
             errors: this.errors,
         });
     }
+
+    error(err: any) {
+        this.res.status(err.status || 500).json({
+            data: undefined,
+            message: err.message || 'An error Occurred',
+            success: false,
+            errors: err.errors,
+        });
+    }
 }
 
 export default AppResponse;

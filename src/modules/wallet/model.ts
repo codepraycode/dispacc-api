@@ -1,13 +1,14 @@
+import { createRowSchema } from '@/lib/nobox/config';
 import { ReturnObject, Space } from 'nobox-client';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Transaction = Record<string, any>;
 
-interface IWallet {
+export interface IWallet {
     title: string;
-    transaction_ids: Transaction[];
+    transaction_ids?: Transaction[];
     charged_amount: number;
-    fixed: boolean;
+    fixed?: boolean;
 }
 
 export const WalletStructure: Space<IWallet> = {
@@ -36,5 +37,7 @@ export const WalletStructure: Space<IWallet> = {
         },
     },
 };
+
+export const WalletModel = createRowSchema<IWallet>(WalletStructure);
 
 export type Wallet = ReturnObject<IWallet>;
