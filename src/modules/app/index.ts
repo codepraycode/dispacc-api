@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
 import walletRouter from '../wallet/route';
+import errorMiddleware from '@/common/middleware/error.middleware';
+import AppResponse from '@/utils/response.utils';
 
 const app = express();
 
@@ -9,7 +11,11 @@ app.use(express.json());
 app.use('/wallet', walletRouter);
 
 app.get('/', (req: Request, res: Response) => {
-    return res.send('Hello world');
+    const resp = new AppResponse(res);
+    resp.message = 'Hello world!';
+    return resp.send();
 });
+
+app.use(errorMiddleware);
 
 export default app;

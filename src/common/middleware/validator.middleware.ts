@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import AppResponse from '@/utils/response.utils';
 import Ajv, { ValidateFunction } from 'ajv';
 import { NextFunction, Request, Response } from 'express';
 
@@ -14,10 +16,11 @@ const validate =
         const valid = validate(req.body);
 
         if (!valid) {
-            res.status(400).json({
-                message: 'Invalid data',
-                errors: validate.errors,
-            });
+            const resp = new AppResponse(res);
+            resp.errors = validate.errors as any[];
+            resp.status = 400;
+
+            resp.send();
         } else {
             next();
         }
