@@ -1,4 +1,4 @@
-import { NOBOX_API, NOBOX_PROJECT, NOBOX_TOKEN } from '@/config';
+import { NOBOX_API, NOBOX_PROJECT, NOBOX_TOKEN } from '@/config/env';
 import { Config, getFunctions, getSchemaCreator } from 'nobox-client';
 
 export const config: Config = {

@@ -2,12 +2,14 @@ import express, { NextFunction, Request, Response } from 'express';
 import walletRouter from '../wallet/route';
 import errorMiddleware from '@/common/middleware/error.middleware';
 import AppResponse from '@/utils/response.utils';
+import notificationRouter from '../notification/route';
 
 const app = express();
 
 // Middleware to parse JSON
 app.use(express.json());
 app.use('/wallet', walletRouter);
+app.use('/notify', notificationRouter);
 
 app.get('/', (req: Request, res: Response) => {
     const resp = new AppResponse(res);

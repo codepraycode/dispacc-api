@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { NODE_ENV } from '@/config';
+import { NODE_ENV } from '@/config/env';
 import { ApiError } from '@/interfaces/ApiResponse';
 import AppResponse from '@/utils/response.utils';
 import { Request, Response } from 'express';

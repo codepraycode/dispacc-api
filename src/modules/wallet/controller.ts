@@ -2,7 +2,7 @@
 import AppResponse from '@/utils/response.utils';
 import { Request, Response } from 'express';
 import { Wallet, WalletModel } from './model';
-import { NODE_ENV } from '@/config';
+import { NODE_ENV } from '@/config/env';
 
 export async function CreateWallet(req: Request, res: Response) {
     const resp = new AppResponse(res);
