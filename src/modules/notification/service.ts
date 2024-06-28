@@ -1,4 +1,9 @@
-import { NODE_ENV, TWILIO_BASE_PHONE_NUMBER } from '@/config/env';
+import {
+    NODE_ENV,
+    TWILIO_BASE_PHONE_NUMBER,
+    TWILIO_WHATSAPP_PHONE_NUMBER,
+    TWILIO_WHATSAPP_PREFIX,
+} from '@/config/env';
 import twilioClient from '@/config/twilio';
 import { NotificationError } from '@/utils/error';
 import { MessageInstance } from 'twilio/lib/rest/api/v2010/account/message';
@@ -26,10 +31,6 @@ export async function sendSMS(config: SendSMSConfig) {
             to: msg.to,
             date_sent: msg.dateSent,
             status: msg.status,
-            error: msg.errorCode && {
-                code: msg.errorCode,
-                message: msg.errorMessage,
-            },
         };
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -48,6 +49,34 @@ export async function sendSMS(config: SendSMSConfig) {
         }
 
         const error = new NotificationError(message, err.code, err.status);
+
+        throw error;
+    }
+}
+
+export async function sendwhatsAppMessage(config: SendSMSConfig) {
+    try {
+        const message: MessageInstance = await twilioClient.messages.create({
+            body: config.body,
+            from: TWILIO_WHATSAPP_PREFIX + TWILIO_WHATSAPP_PHONE_NUMBER,
+            to: TWILIO_WHATSAPP_PREFIX + config.to,
+        });
+
+        console.debug(message);
+
+        const msg = message.toJSON();
+
+        return {
+            from: msg.from,
+            to: msg.to,
+            date_sent: msg.dateSent,
+            status: msg.status,
+        };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (err: any) {
+        console.error(err);
+
+        const error = new NotificationError(err.message, err.code, err.status);
 
         throw error;
     }
