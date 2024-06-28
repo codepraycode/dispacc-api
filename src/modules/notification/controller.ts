@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import AppResponse from '@/utils/response.utils';
 import { Request, Response } from 'express';
-import { sendSMS, sendwhatsAppMessage } from './service';
+import { sendMail, sendSMS, sendwhatsAppMessage } from './service';
 
 export async function SendSMS(req: Request, res: Response) {
     const { message, phoneNumber } = req.body;
@@ -83,6 +83,29 @@ export async function WhatsAppStatusCallback(req: Request, res: Response) {
     resp.status = 200;
     resp.message = 'WhatsApp Message status callback';
     resp.data = {};
+
+    return resp.send();
+}
+
+export async function SendMail(req: Request, res: Response) {
+    const { to, subject, body } = req.body;
+
+    const resp = new AppResponse(res);
+
+    try {
+        await sendMail({ to, subject, body });
+
+        resp.status = 200;
+        resp.message = 'Mail sent sent!';
+        // resp.data = messageResponse;
+    } catch (err: any) {
+        resp.status = 400;
+        resp.data = {
+            message: err.message,
+            code: err.code,
+            status: err.status,
+        };
+    }
 
     return resp.send();
 }
